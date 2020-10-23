@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.yangwawa.topview.hook.WindowManagerHook;
+
 import java.util.LinkedList;
 
 public class TopView implements Application.ActivityLifecycleCallbacks {
@@ -22,6 +24,7 @@ public class TopView implements Application.ActivityLifecycleCallbacks {
     private Activity mCurrentActivity = null;
 
     private LinkedList<View> mViews = new LinkedList<>();
+    WindowManagerHook mWindowMgrHook = null;
 
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
@@ -76,7 +79,10 @@ public class TopView implements Application.ActivityLifecycleCallbacks {
         mContext = application.getApplicationContext();
         mApp.registerActivityLifecycleCallbacks(this);
 
+        mWindowMgrHook = new WindowManagerHook();
+        mWindowMgrHook.hook();
     }
+
     public void addView(View view){
         mViews.add(view);
         detachAll(mCurrentActivity);
