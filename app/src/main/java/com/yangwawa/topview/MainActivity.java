@@ -36,4 +36,10 @@ public class MainActivity extends AppCompatActivity {
         dialog.setContentView(tv);
         dialog.show();
     }
+
+    @Override
+    protected void onDestroy() {
+        TopView.getInstance().detachAll();
+        super.onDestroy();
+    }
 }

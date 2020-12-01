@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.yangwawa.topview.hook.WindowManagerHook;
 
 import java.util.LinkedList;
@@ -22,6 +23,7 @@ public class TopView implements Application.ActivityLifecycleCallbacks {
     private Context mContext = null;
     private Application mApp = null;
     private Activity mCurrentActivity = null;
+    private boolean mIsAttching = false;
 
     private LinkedList<View> mViews = new LinkedList<>();
     WindowManagerHook mWindowMgrHook = null;
@@ -40,14 +42,14 @@ public class TopView implements Application.ActivityLifecycleCallbacks {
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
         Log.v(TAG, "onActivityResumed" + activity);
-        mCurrentActivity = activity;
-        attchAll(activity);
+//        mCurrentActivity = activity;
+//        attchAll(activity);
     }
 
     @Override
     public void onActivityPaused(@NonNull Activity activity) {
         Log.v(TAG, "onActivityPaused" + activity);
-        detachAll(activity);
+//        detachAll(activity);
     }
 
     @Override
@@ -77,7 +79,7 @@ public class TopView implements Application.ActivityLifecycleCallbacks {
     public void init(Application application){
         mApp = application;
         mContext = application.getApplicationContext();
-        mApp.registerActivityLifecycleCallbacks(this);
+//        mApp.registerActivityLifecycleCallbacks(this);
 
         mWindowMgrHook = new WindowManagerHook();
         mWindowMgrHook.hook();
@@ -85,14 +87,20 @@ public class TopView implements Application.ActivityLifecycleCallbacks {
 
     public void addView(View view){
         mViews.add(view);
-        detachAll(mCurrentActivity);
+        if(mCurrentActivity == null){
+            mCurrentActivity = ActivityUtils.getTopActivity();
+        }else {
+            detachAll(mCurrentActivity);
+        }
         attchAll(mCurrentActivity);
     }
 
-    private void attchAll(Activity activity){
-        if(activity == null){
+    public void attchAll(Activity activity){
+        Log.v(TAG, "attchAll::" + activity);
+        if(activity == null || mViews.isEmpty()){
             return;
         }
+        mIsAttching = true;
         for(View view : mViews){
             WindowManager.LayoutParams lp = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT);
@@ -103,19 +111,36 @@ public class TopView implements Application.ActivityLifecycleCallbacks {
             lp.format = PixelFormat.TRANSLUCENT;
             activity.getWindowManager().addView(view, lp);
         }
+        mCurrentActivity = activity;
+        mIsAttching = false;
+    }
+    public void detachAll(){
+        if(mCurrentActivity != null){
+            detachAll(mCurrentActivity);
+        }
     }
 
-    private void detachAll(Activity activity){
+    public void detachAll(Activity activity){
+        Log.v(TAG, "detachAll::" + activity);
         for(View view : mViews){
             try {
                 activity.getWindowManager().removeView(view);
             }catch (Exception e){
                 //TODO:
+                e.printStackTrace();
             }
         }
     }
 
     public void removeView(View view){
         mViews.remove(view);
+    }
+
+    public boolean isAttching() {
+        return mIsAttching;
+    }
+
+    public Activity getCurrentActivity(){
+        return mCurrentActivity;
     }
 }

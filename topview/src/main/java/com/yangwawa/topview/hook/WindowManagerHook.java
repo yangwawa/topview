@@ -1,9 +1,14 @@
 package com.yangwawa.topview.hook;
 
+import android.app.Activity;
 import android.util.Log;
 import android.view.IWindowSession;
+import android.view.ViewRootImpl;
+import android.view.WindowManager;
 import android.view.WindowManagerGlobal;
 
+import com.blankj.utilcode.util.ActivityUtils;
+import com.yangwawa.topview.TopView;
 import com.yangwawa.topview.utils.ReflectUtils;
 
 import java.lang.reflect.InvocationHandler;
@@ -29,7 +34,26 @@ public class WindowManagerHook implements InvocationHandler {
 
     @Override
     public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
-        Log.v(TAG, "invoke method: " + method.getName() + " objects: " + Arrays.deepToString(objects));
+        Log.v(TAG, "invoke method:" + method.getName() + " isAttching=" + TopView.getInstance().isAttching() + " args=" + Arrays.deepToString(objects));
+        Activity activity = ActivityUtils.getTopActivity();
+        boolean activityChanged = activity != TopView.getInstance().getCurrentActivity();
+        if(activityChanged){
+            Log.d(TAG, "activity changed currunt=" + TopView.getInstance().getCurrentActivity() + " new=" + activity);
+        }
+        if(method.getName().equals("addToDisplay") || method.getName().equals("addToDisplayAsUser")){
+            WindowManager.LayoutParams params = (WindowManager.LayoutParams)objects[2];
+            if(!TopView.getInstance().isAttching()){
+                TopView.getInstance().detachAll();
+                TopView.getInstance().attchAll(activity);
+            }
+        }
+        if(method.getName().equals("relayout") && activityChanged){
+            TopView.getInstance().detachAll();
+            TopView.getInstance().attchAll(activity);
+        }
+//        if(method.getName().equals("remove")){
+//            TopView.getInstance().detachAll();
+//        }
         Object result = method.invoke(mOriWindowSession, objects);
         return result;
     }
