@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(mTextSize, mTextSize);
         dialog.addContentView(btn, lp);
         dialog.show();
-        mTextSize -= ConvertUtils.dp2px(20);
+        mTextSize -= ConvertUtils.dp2px(40);
     }
 
     @Override
