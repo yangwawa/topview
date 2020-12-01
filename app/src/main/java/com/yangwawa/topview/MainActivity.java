@@ -12,10 +12,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int mTextSize = ConvertUtils.dp2px(500);
+    private int mDialogWith = ScreenUtils.getScreenWidth();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dialog.setTitle("title");
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(mTextSize, mTextSize);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(mDialogWith, mDialogWith);
         dialog.addContentView(btn, lp);
         dialog.show();
-        mTextSize -= ConvertUtils.dp2px(40);
+        mDialogWith -= ConvertUtils.dp2px(40);
     }
 
     @Override
