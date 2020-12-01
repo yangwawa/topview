@@ -1,72 +1,24 @@
 package com.yangwawa.topview;
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
 import android.graphics.PixelFormat;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.yangwawa.topview.hook.WindowManagerHook;
 
 import java.util.LinkedList;
 
-public class TopView implements Application.ActivityLifecycleCallbacks {
+public class TopView {
 
     private static final String TAG = "TopView";
-    private Context mContext = null;
-    private Application mApp = null;
     private Activity mCurrentActivity = null;
     private boolean mIsAttching = false;
 
     private LinkedList<View> mViews = new LinkedList<>();
     WindowManagerHook mWindowMgrHook = null;
-
-    @Override
-    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
-        Log.v(TAG, "onActivityCreated" + activity);
-
-    }
-
-    @Override
-    public void onActivityStarted(@NonNull Activity activity) {
-        Log.v(TAG, "onActivityStarted" + activity);
-    }
-
-    @Override
-    public void onActivityResumed(@NonNull Activity activity) {
-        Log.v(TAG, "onActivityResumed" + activity);
-//        mCurrentActivity = activity;
-//        attchAll(activity);
-    }
-
-    @Override
-    public void onActivityPaused(@NonNull Activity activity) {
-        Log.v(TAG, "onActivityPaused" + activity);
-//        detachAll(activity);
-    }
-
-    @Override
-    public void onActivityStopped(@NonNull Activity activity) {
-        Log.v(TAG, "onActivityStopped" + activity);
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
-        Log.v(TAG, "onActivitySaveInstanceState" + activity);
-    }
-
-    @Override
-    public void onActivityDestroyed(@NonNull Activity activity) {
-        Log.v(TAG, "onActivityDestroyed" + activity);
-    }
 
     private static class Holder{
         private static TopView sHolder = new TopView();
@@ -76,11 +28,7 @@ public class TopView implements Application.ActivityLifecycleCallbacks {
     }
     private TopView(){}
 
-    public void init(Application application){
-        mApp = application;
-        mContext = application.getApplicationContext();
-//        mApp.registerActivityLifecycleCallbacks(this);
-
+    public void init(){
         mWindowMgrHook = new WindowManagerHook();
         mWindowMgrHook.hook();
     }
