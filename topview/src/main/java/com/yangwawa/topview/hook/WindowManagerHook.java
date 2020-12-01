@@ -1,6 +1,8 @@
 package com.yangwawa.topview.hook;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.IWindowSession;
 import android.view.ViewRootImpl;
@@ -35,7 +37,7 @@ public class WindowManagerHook implements InvocationHandler {
     @Override
     public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
         Log.v(TAG, "invoke method:" + method.getName() + " isAttching=" + TopView.getInstance().isAttching() + " args=" + Arrays.deepToString(objects));
-        Activity activity = ActivityUtils.getTopActivity();
+        final Activity activity = ActivityUtils.getTopActivity();
         boolean activityChanged = activity != TopView.getInstance().getCurrentActivity();
         if(activityChanged){
             Log.d(TAG, "activity changed currunt=" + TopView.getInstance().getCurrentActivity() + " new=" + activity);
@@ -43,8 +45,14 @@ public class WindowManagerHook implements InvocationHandler {
         if(method.getName().equals("addToDisplay") || method.getName().equals("addToDisplayAsUser")){
             WindowManager.LayoutParams params = (WindowManager.LayoutParams)objects[2];
             if(!TopView.getInstance().isAttching()){
-                TopView.getInstance().detachAll();
-                TopView.getInstance().attchAll(activity);
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postAtFrontOfQueue(new Runnable() {
+                    @Override
+                    public void run() {
+                        TopView.getInstance().detachAll();
+                        TopView.getInstance().attchAll(activity);
+                    }
+                });
             }
         }
         if(method.getName().equals("relayout") && activityChanged){
