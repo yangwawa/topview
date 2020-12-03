@@ -1,7 +1,6 @@
 package com.yangwawa.topview;
 
 import android.app.Activity;
-import android.graphics.PixelFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,7 +16,7 @@ public class TopView {
     private Activity mCurrentActivity = null;
     private boolean mIsAttching = false;
 
-    private LinkedList<View> mViews = new LinkedList<>();
+    private LinkedList<ViewWrapper> mViews = new LinkedList<>();
     WindowManagerHook mWindowMgrHook = null;
 
     private static class Holder{
@@ -33,8 +32,9 @@ public class TopView {
         mWindowMgrHook.hook();
     }
 
-    public void addView(View view){
-        mViews.add(view);
+    public void addView(View view, WindowManager.LayoutParams lp){
+        ViewWrapper vw = new ViewWrapper(view, lp);
+        mViews.add(vw);
         if(mCurrentActivity == null){
             mCurrentActivity = ActivityUtils.getTopActivity();
         }else {
@@ -49,15 +49,10 @@ public class TopView {
             return;
         }
         mIsAttching = true;
-        for(View view : mViews){
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT);
-            lp.width = 300;
-            lp.height = 100;
-            lp.type = WindowManager.LayoutParams.TYPE_APPLICATION;
-            lp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-            lp.format = PixelFormat.TRANSLUCENT;
-            activity.getWindowManager().addView(view, lp);
+        for(ViewWrapper vw : mViews){
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(vw.lp);
+            activity.getWindowManager().addView(vw.view, lp);
         }
         mCurrentActivity = activity;
         mIsAttching = false;
@@ -70,9 +65,9 @@ public class TopView {
 
     public void detachAll(Activity activity){
         Log.v(TAG, "detachAll::" + activity);
-        for(View view : mViews){
+        for(ViewWrapper vw : mViews){
             try {
-                activity.getWindowManager().removeView(view);
+                activity.getWindowManager().removeView(vw.view);
             }catch (Exception e){
                 //TODO:
                 e.printStackTrace();
@@ -90,5 +85,14 @@ public class TopView {
 
     public Activity getCurrentActivity(){
         return mCurrentActivity;
+    }
+
+    class ViewWrapper{
+        final View view;
+        final WindowManager.LayoutParams lp;
+        ViewWrapper(View v, WindowManager.LayoutParams lp) {
+            this.view = v;
+            this.lp = lp;
+        }
     }
 }
