@@ -1,4 +1,4 @@
-package com.yangwawa.topview;
+package com.yangwawa.topview.demo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.yangwawa.topview.TopView;
 
 public class MainActivity extends AppCompatActivity {
 

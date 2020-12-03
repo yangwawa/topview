@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.panpf.bintray-publish'
 
 android {
     compileSdkVersion 30
@@ -20,6 +21,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -29,7 +33,20 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
     implementation 'com.blankj:utilcode:1.30.4'
+}
 
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+publish {
+    userOrg = 'yangwawa'      //bintray注册的用户名
+    groupId = 'com.yangwawa'         //compile引用时的第1部分groupId，一般为包名
+    artifactId = 'topview'     //compile引用时的第2部分项目名，这个需要与我们之前创建的package的Name一样，要不会上传失败
+    publishVersion = '0.0.2'    //compile引用时的第3部分版本号
+    desc = 'Android topview '  //描述  随便写
+    website = 'https://github.com/yangwawa/topview'   //项目的网页，可以写源码的GitHub地址
+    bintrayUser = properties.getProperty("bintray.user")
+    bintrayKey = properties.getProperty("bintray.apikey")
 }
