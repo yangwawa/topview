@@ -25,9 +25,11 @@ public class TopView {
     public static TopView getInstance(){
         return Holder.sHolder;
     }
-    private TopView(){}
+    private TopView(){
+       init();
+    }
 
-    public void init(){
+    private void init(){
         mWindowMgrHook = new WindowManagerHook();
         mWindowMgrHook.hook();
     }
@@ -57,6 +59,7 @@ public class TopView {
         mCurrentActivity = activity;
         mIsAttching = false;
     }
+
     public void detachAll(){
         if(mCurrentActivity != null){
             detachAll(mCurrentActivity);

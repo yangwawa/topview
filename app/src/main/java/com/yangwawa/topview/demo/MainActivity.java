@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -35,15 +36,18 @@ public class MainActivity extends AppCompatActivity {
     public void addNewTopView(View view){
         TextView tv = new TextView(this);
         tv.setText("topview is always top");
-        tv.setTextColor(Color.RED);
+        tv.setTextColor(Color.GREEN);
+        tv.setGravity(Gravity.CENTER);
+        tv.setBackgroundColor(Color.BLACK);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
-        lp.width = 500;
-        lp.height = 500;
+        lp.width = 600;
+        lp.height = 300;
         lp.type = WindowManager.LayoutParams.TYPE_APPLICATION;
         lp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         lp.format = PixelFormat.TRANSLUCENT;
         TopView.getInstance().addView(tv, lp);
+
     }
 
     public void showNewDailog(View view){

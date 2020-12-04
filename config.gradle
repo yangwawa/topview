@@ -1,0 +1,13 @@
+ext {
+    versions = [
+            'minSdk'    : 14,
+            'compileSdk': 30,
+            'buildTool' : "30.0.1"
+    ]
+    repoConfig = [
+        userOrg : 'yangwawa',
+        groupId : 'com.yangwawa',
+        artifactId : 'topview',
+        publishVersion : '0.0.2',
+    ]
+}
