@@ -10,7 +10,7 @@ It works by hooking WindowManagerService proxy to detect view change, then re-ad
 add implements in build.gradle
 
 ```groovy
-implementation 'com.yangwawa:topviw:0.0.2'
+implementation 'com.yangwawa:topview:0.0.2'
 ```
 
 ## Usage
