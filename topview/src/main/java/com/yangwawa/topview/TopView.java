@@ -5,8 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.blankj.utilcode.util.ActivityUtils;
-import com.yangwawa.topview.hook.WindowManagerHook;
+import com.yangwawa.topview.internal.WindowManagerHook;
+import com.yangwawa.topview.internal.ActivityUtils;
 
 import java.util.LinkedList;
 
@@ -37,11 +37,11 @@ public class TopView {
     public void addView(View view, WindowManager.LayoutParams lp){
         ViewWrapper vw = new ViewWrapper(view, lp);
         mViews.add(vw);
-        if(mCurrentActivity == null){
-            mCurrentActivity = ActivityUtils.getTopActivity();
-        }else {
+        Activity current = ActivityUtils.getTopActivity();
+        if(mCurrentActivity != current){
             detachAll(mCurrentActivity);
         }
+        mCurrentActivity = current;
         attchAll(mCurrentActivity);
     }
 
@@ -79,7 +79,20 @@ public class TopView {
     }
 
     public void removeView(View view){
-        mViews.remove(view);
+        if(mCurrentActivity != null){
+            try {
+                mCurrentActivity.getWindowManager().removeView(view);
+            }catch (Exception e){
+                //TODO:
+                e.printStackTrace();
+            }
+        }
+        for(ViewWrapper vw : mViews){
+            if(vw.view == view){
+                mViews.remove(vw);
+                break;
+            }
+        }
     }
 
     public boolean isAttching() {

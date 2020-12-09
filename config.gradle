@@ -1,8 +1,8 @@
 ext {
     versions = [
             'minSdk'    : 14,
-            'compileSdk': 30,
-            'buildTool' : "30.0.1"
+            'compileSdk': 29,
+            'buildTool' : "28.0.2"
     ]
     repoConfig = [
         userOrg : 'yangwawa',

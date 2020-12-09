@@ -1,12 +1,12 @@
 package com.yangwawa.topview.demo;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,8 @@ import com.yangwawa.topview.TopView;
 public class MainActivity extends AppCompatActivity {
 
     private int mDialogWith = ScreenUtils.getScreenWidth();
+
+    private View mTopView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void addNewTopView(View view){
-        TextView tv = new TextView(this);
-        tv.setText("topview is always top");
-        tv.setTextColor(Color.GREEN);
-        tv.setGravity(Gravity.CENTER);
-        tv.setBackgroundColor(Color.BLACK);
+        if(mTopView == null){
+            TextView tv = new TextView(this);
+            tv.setText("topview is always top");
+            tv.setTextColor(Color.GREEN);
+            tv.setGravity(Gravity.CENTER);
+            tv.setBackgroundColor(Color.BLACK);
+            mTopView = tv;
+        }
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
         lp.width = 600;
@@ -46,8 +51,11 @@ public class MainActivity extends AppCompatActivity {
         lp.type = WindowManager.LayoutParams.TYPE_APPLICATION;
         lp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         lp.format = PixelFormat.TRANSLUCENT;
-        TopView.getInstance().addView(tv, lp);
+        TopView.getInstance().addView(mTopView, lp);
+    }
 
+    public void removeTopview(View v){
+        TopView.getInstance().removeView(mTopView);
     }
 
     public void showNewDailog(View view){
@@ -69,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        TopView.getInstance().detachAll();
+        TopView.getInstance().removeView(mTopView);
         super.onDestroy();
     }
 }

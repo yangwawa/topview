@@ -1,4 +1,4 @@
-package com.yangwawa.topview.utils;
+package com.yangwawa.topview.internal;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;

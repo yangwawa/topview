@@ -1,17 +1,14 @@
-package com.yangwawa.topview.hook;
+package com.yangwawa.topview.internal;
 
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.IWindowSession;
-import android.view.ViewRootImpl;
 import android.view.WindowManager;
 import android.view.WindowManagerGlobal;
 
-import com.blankj.utilcode.util.ActivityUtils;
 import com.yangwawa.topview.TopView;
-import com.yangwawa.topview.utils.ReflectUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
