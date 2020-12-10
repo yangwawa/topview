@@ -72,7 +72,6 @@ public class TopView {
             try {
                 activity.getWindowManager().removeView(vw.view);
             }catch (Exception e){
-                //TODO:
                 e.printStackTrace();
             }
         }
@@ -83,7 +82,6 @@ public class TopView {
             try {
                 mCurrentActivity.getWindowManager().removeView(view);
             }catch (Exception e){
-                //TODO:
                 e.printStackTrace();
             }
         }

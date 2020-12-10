@@ -8,6 +8,6 @@ ext {
         userOrg : 'yangwawa',
         groupId : 'com.yangwawa',
         artifactId : 'topview',
-        publishVersion : '0.0.2',
+        publishVersion : '0.0.3',
     ]
 }
