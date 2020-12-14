@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class ImageActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         Button btn = new Button(this);
         btn.setText("new dialog");
+        btn.setGravity(Gravity.TOP | Gravity.LEFT);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

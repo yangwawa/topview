@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void addNewTopView(View view){
         if(mTopView == null){
             TextView tv = new TextView(this);
@@ -62,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         Button btn = new Button(this);
         btn.setText("new dialog");
+        btn.setGravity(Gravity.TOP | Gravity.LEFT);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
