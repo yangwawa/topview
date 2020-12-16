@@ -1,6 +1,6 @@
 # topview
 topview is a android UI tools for making a view always show in front of screen, but without permissions.
-
+![GIF example](topview.gif)
 ## How It Works
 
 It works by hooking WindowManagerService proxy to detect view change, then re-add topview to make it always in front of screen。
